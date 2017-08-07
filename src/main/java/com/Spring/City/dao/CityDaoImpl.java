@@ -20,6 +20,14 @@ public class CityDaoImpl implements CityDao {
     }
 
     @Override
+    public void addCity(CityDistance cityDistance) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(cityDistance);
+        logger.info("City successfully saved. City details " + cityDistance);
+    }
+
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<CityDistance> getCities() {
         Session session = this.sessionFactory.getCurrentSession();
@@ -30,6 +38,33 @@ public class CityDaoImpl implements CityDao {
         }
 
         return cities;
+    }
+
+    @Override
+    public CityDistance getCityById(long id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        CityDistance cityDistance = (CityDistance) session.load(CityDistance.class, new Long(id));
+        logger.info("City successfully loaded. City: "+cityDistance);
+
+        return cityDistance;
+    }
+
+    @Override
+    public void updateCity(CityDistance cityDistance) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(cityDistance);
+        logger.info("City successfully update. City details: "+cityDistance);
+    }
+
+    @Override
+    public void removeCity(long id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        CityDistance cityDistance = (CityDistance) session.load(CityDistance.class, new Long(id));
+
+        if(cityDistance != null)
+            session.delete(cityDistance);
+
+        logger.info("City successfully removed. City details: " + cityDistance);
     }
 
 }

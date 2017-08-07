@@ -8,7 +8,7 @@ public class CityDistance {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "CITY_A")
     private String cityA;
@@ -19,11 +19,11 @@ public class CityDistance {
     @Column(name = "DISTANCE")
     private int distance;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -1,11 +1,19 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#test").click(function(){
+                $.get("/ajaxtest",function(data,status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-    ${message}
-    <a href="<c:url value="/" />">Back</a>
+<button id="test">Load</button>
 </body>
 </html>

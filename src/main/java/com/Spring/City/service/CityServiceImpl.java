@@ -21,7 +21,31 @@ public class CityServiceImpl implements CityService{
 
     @Override
     @Transactional
+    public void addCity(CityDistance cityDistance) {
+        this.cityDao.addCity(cityDistance);
+    }
+
+    @Override
+    @Transactional
+    public void updateCity(CityDistance cityDistance) {
+        this.cityDao.updateCity(cityDistance);
+    }
+
+    @Override
+    @Transactional
+    public void removeCity(long id) {
+        this.cityDao.removeCity(id);
+    }
+
+    @Override
+    @Transactional
     public List<CityDistance> getCities() {
         return this.cityDao.getCities();
+    }
+
+    @Override
+    @Transactional
+    public CityDistance getCityById(long id) {
+        return this.cityDao.getCityById(id);
     }
 }
