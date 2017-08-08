@@ -15,6 +15,9 @@ public class AjaxResponseBody {
     @JsonView(Views.Public.class)
     private List<CityDistance> result;
 
+    @JsonView(Views.Public.class)
+    private SearchCriteria resultCriteria;
+
     public String getMessage() {
         return message;
     }
@@ -39,12 +42,21 @@ public class AjaxResponseBody {
         this.result = result;
     }
 
+    public SearchCriteria getResultCriteria() {
+        return resultCriteria;
+    }
+
+    public void setResultCriteria(SearchCriteria resultCriteria) {
+        this.resultCriteria = resultCriteria;
+    }
+
     @Override
     public String toString() {
         return "AjaxResponseBody{" +
                 "message='" + message + '\'' +
                 ", code='" + code + '\'' +
                 ", result=" + result +
+                ", resultCriteria=" + resultCriteria +
                 '}';
     }
 }

@@ -9,65 +9,70 @@
     <c:import url="fragments/head.jsp"/>
 </head>
 <body>
-<c:if test="${! empty cities}">
+
+<div class="container" style="min-height: 500px">
+
+    <div id="feedback"></div>
+
+    <c:if test="${! empty cities}">
+        <div class="row" id="jsTable">
+            <div class="col-md-6 col-md-offset-3">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>City A</th>
+                        <th>City B</th>
+                        <th>Distance</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr>
+                        <c:forEach items="${cities}" var="city">
+                    <tr>
+                        <td>${city.id}</td>
+                        <td>${city.cityA}</td>
+                        <td>${city.cityB}</td>
+                        <td>${city.distance}</td>
+                        <td><a href="<c:url value='/edit/${city.id}'/>">Edit</a></td>
+                        <td><a href="<c:url value='/remove/${city.id}'/>">Delete</a></td>
+                    </tr>
+                    </c:forEach>
+                </table>
+                <a href="<c:url value="/index.jsp"/>" class="btn btn-info">To main</a>
+            </div>
+        </div>
+    </c:if>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <table class="table">
-                <tr>
-                    <th>ID</th>
-                    <th>City A</th>
-                    <th>City B</th>
-                    <th>Distance</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                <tr>
-                    <c:forEach items="${cities}" var="city">
-                <tr>
-                    <td>${city.id}</td>
-                    <td>${city.cityA}</td>
-                    <td>${city.cityB}</td>
-                    <td>${city.distance}</td>
-                    <td><a href="<c:url value='/edit/${city.id}'/>">Edit</a></td>
-                    <td><a href="<c:url value='/remove/${city.id}'/>">Delete</a></td>
-                </tr>
-                </c:forEach>
-            </table>
-            <a href="<c:url value="/index.jsp"/>" class="btn btn-info" role="button">To main</a>
+            <h1>Add new city</h1>
+            <c:url var="addAction" value="/cities/add"/>
+            <form action="${addAction}">
+                <div class="form-group jsIdForm">
+                    <label class="control-label" for="id">ID</label>
+                    <input class="form-control" id="id" name="id" readonly size="8" disabled value="${city.id}"/>
+                    <input class="form-control" name="id" type="hidden"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="jsCityA">First City</label>
+                    <input class="form-control jsCityA" id="jsCityA" name="cityA" value="${city.cityA}"/>
+                </div>
+                <div class="form-group jsCityBForm">
+                    <label class="control-label" for="jsCityB">Second City</label>
+                    <input class="form-control jsCityB" id="jsCityB" name="cityB" value="${city.cityB}"/>
+                </div>
+                <div class="form-group jsDistanceForm">
+                    <label class="control-label" for="jsDistance">Distance</label>
+                    <input class="form-control jsDistance" id="jsDistance" name="distance" value="${city.distance}"/>
+                </div>
+                <c:if test="${!empty city.cityA}">
+                    <button class="btn btn-default jsEditBtn" type="button">Edit</button>
+                </c:if>
+                <c:if test="${empty city.cityA}">
+                    <button class="btn btn-default jsSaveBtn" type="button">Save</button>
+                </c:if>
+            </form>
         </div>
     </div>
-</c:if>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h1>Add new city</h1>
-        <c:url var="addAction" value="/cities/add"/>
-        <form:form action="${addAction}" commandName="city">
-            <div class="form-group">
-                <label for="id">ID</label>
-                <form:input path="id" id="id" class="form-control" readonly="true" size="8" disabled="true"/>
-                <form:hidden path="id" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="CityA">First City</label>
-                <form:input path="cityA" id="CityA" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="CityB">Second City</label>
-                <form:input path="cityB" id="CityB" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="distance">Distance</label>
-                <form:input path="distance" id="distance" class="form-control"/>
-            </div>
-            <c:if test="${!empty city.cityA}">
-                <button class="btn btn-default jsEditBtn">Edit</button>
-            </c:if>
-            <c:if test="${empty city.cityA}">
-                <button class="btn btn-default jsSaveBtn">Save</button>
-            </c:if>
-        </form:form>
-    </div>
-    <button class="btn btn-default jsTestBtn">Test</button>
 </div>
 </body>
 </html>
