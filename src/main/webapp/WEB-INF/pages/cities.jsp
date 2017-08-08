@@ -11,9 +11,6 @@
 <body>
 
 <div class="container" style="min-height: 500px">
-
-    <div id="feedback"></div>
-
     <c:if test="${! empty cities}">
         <div class="row" id="jsTable">
             <div class="col-md-6 col-md-offset-3">
@@ -33,8 +30,8 @@
                         <td>${city.cityA}</td>
                         <td>${city.cityB}</td>
                         <td>${city.distance}</td>
-                        <td><a href="<c:url value='/edit/${city.id}'/>">Edit</a></td>
-                        <td><a href="<c:url value='/remove/${city.id}'/>">Delete</a></td>
+                        <td><a href="<c:url value='cities/rest/edit/${city.id}'/>">Edit</a></td>
+                        <td><a href="<c:url value='cities/rest/remove/${city.id}'/>">Delete</a></td>
                     </tr>
                     </c:forEach>
                 </table>
@@ -45,7 +42,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h1>Add new city</h1>
-            <c:url var="addAction" value="/cities/add"/>
+            <c:url var="addAction" value="/cities/rest/add"/>
             <form action="${addAction}">
                 <div class="form-group jsIdForm">
                     <label class="control-label" for="id">ID</label>
@@ -73,6 +70,8 @@
             </form>
         </div>
     </div>
+
+    <div id="feedback"></div>
 </div>
 </body>
 </html>

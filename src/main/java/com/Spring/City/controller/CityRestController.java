@@ -75,13 +75,13 @@ public class CityRestController {
     public AjaxResponseBody updateBook(@RequestBody SearchCriteria criteria) {
         AjaxResponseBody result = new AjaxResponseBody();
 
-        if(isValidSearchCriteria(criteria)){
+        if (isValidSearchCriteria(criteria)) {
             cityService.updateCity(buildCityDistance(criteria));
 
             result.setCode("200");
             result.setMessage("");
             result.setResultCriteria(criteria);
-        }else{
+        } else {
             result.setCode("400");
             result.setMessage("Search criteria is empty!");
         }
@@ -93,13 +93,14 @@ public class CityRestController {
     private boolean isValidSearchCriteria(SearchCriteria criteria) {
         boolean valid = true;
 
-        if (criteria == null) {
+        if (criteria == null)
             valid = false;
-        } else if (criteria.getCityA().equals("")) {
+        else if (criteria.getCityA().equals(""))
             valid = false;
-        } else if (criteria.getCityB().equals("")) {
+        else if (criteria.getCityB().equals(""))
             valid = false;
-        }
+        else if (criteria.getDistance() <= 0)
+            valid = false;
 
         return valid;
     }
