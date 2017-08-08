@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -46,12 +47,27 @@ public class CityController {
         return "cities";
     }
 
+    @RequestMapping(value = "/getCities", method = RequestMethod.GET)
+    @ResponseBody
+    public List<CityDistance> getCities(){
+        return this.cityService.getCities();
+    }
+
     @RequestMapping(value = "/cities/add", method = RequestMethod.POST)
-    public String addBook(@ModelAttribute("city") CityDistance city) {
+    public String addCity(@ModelAttribute("city") CityDistance city) {
         if (city.getId() == 0) {
             this.cityService.addCity(city);
         }
+        else{
+            this.cityService.updateCity(city);
+        }
         return "redirect:/cities";
+    }
+
+    @RequestMapping(value = "/cities/addTest", method = RequestMethod.POST)
+    public CityDistance addTest(@ModelAttribute(value = "city") CityDistance city){
+        this.cityService.addCity(city);
+        return city;
     }
 
     @RequestMapping("/remove/{id}")
@@ -62,7 +78,7 @@ public class CityController {
     }
 
     @RequestMapping("edit/{id}")
-    public String editCity(@PathVariable("id") long id, Model model) {
+    public String updateCity(@PathVariable("id") long id, Model model) {
         model.addAttribute("city", this.cityService.getCityById(id));
         model.addAttribute("cities", this.cityService.getCities());
 

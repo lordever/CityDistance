@@ -59,9 +59,15 @@
                 <label for="distance">Distance</label>
                 <form:input path="distance" id="distance" class="form-control"/>
             </div>
-            <button class="btn btn-default">Save</button>
+            <c:if test="${!empty city.cityA}">
+                <button class="btn btn-default jsEditBtn">Edit</button>
+            </c:if>
+            <c:if test="${empty city.cityA}">
+                <button class="btn btn-default jsSaveBtn">Save</button>
+            </c:if>
         </form:form>
     </div>
+    <button class="btn btn-default jsTestBtn">Test</button>
 </div>
 </body>
 </html>
