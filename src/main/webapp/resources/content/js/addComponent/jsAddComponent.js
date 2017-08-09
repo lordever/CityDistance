@@ -10,21 +10,24 @@ $(document).ready(function () {
 function fillFields(marker) {
     var formValid = isValid();
     if (formValid) {
-        var toAddition = {};
-        toAddition["cityA"] = $('#jsCityA').val();
-        toAddition["cityB"] = $('#jsCityB').val();
-        toAddition["distance"] = $('#jsDistance').val();
+        var toPass = {};
+        toPass["id"] = $('#jsCityId').val();
+        toPass["cityA"] = $('#jsCityA').val();
+        toPass["cityB"] = $('#jsCityB').val();
+        toPass["distance"] = $('#jsDistance').val();
         if (marker === 'addition')
-            sendData(toAddition, '/rest/add');
+            sendData(toPass, marker);
         if (marker === 'edit')
-            sendData(toAddition, '/rest/edit');
+            sendData(toPass, marker);
     }
 }
 
 function isValid() {
-    var isValid = true;
 
-    $('input:gt(1)').each(function () {
+    var inputs = $('input:gt(1)');
+    var isValid = true;
+    var size = inputs.length;
+    inputs.each(function (index) {
         var formGroup = $(this).parent();
         if ($(this).val() !== '') {
             formGroup.addClass('has-success').removeClass('has-error');
@@ -32,38 +35,49 @@ function isValid() {
             formGroup.addClass('has-error').removeClass('has-success');
             isValid = false;
         }
+        if(index === size -1 && $(this).val() === '0'){
+            formGroup.addClass('has-error').removeClass('has-success');
+        }
     });
-
     return isValid;
 }
 
-function sendData(toAddition, url) {
-    console.log(window.location.href + url);
+function sendData(toPass, marker) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: window.location.href + url,
-        data: JSON.stringify(toAddition),
+        url: window.location.origin + '/rest/post',
+        data: JSON.stringify(toPass),
         dataType: 'json',
         timeout: 100000,
         success: function (data) {
             console.log('SUCCESS: ', data);
-            display(data);
+            display(data, marker);
         },
         error: function (e) {
             console.log('ERROR: ', e);
-            display(e);
+            display(e, 'error');
         },
         done: function (d) {
             console.log("DONE: ", d);
-            display(d);
+            display(d, marker);
         }
     });
 }
 
-function display(data) {
-    var json = "<h4>Ajax Response</h4><pre>"
-        + JSON.stringify(data, null, 4) + "</pre>";
-    $('#feedback').html(json);
-    $('#jsTable').load(window.location.href + " #jsTable");
+function display(data, marker) {
+    var table = $('#jsTable');
+    if (marker === 'edit' || table.length === 0)
+        redirectToCities();
+    if (marker === 'addition' || marker === 'error') {
+        var json = "<h4>Ajax Response</h4><pre>"
+            + JSON.stringify(data, null, 4) + "</pre>";
+        $('#feedback').html(json);
+        table.load(window.location.href + " #jsTable");
+    }
+}
+
+function redirectToCities(){
+    location.href = '/cities';
+    location.hash = '/cities';
 }

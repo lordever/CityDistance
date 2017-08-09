@@ -4,9 +4,11 @@
 <head>
     <title>Main</title>
     <c:import url="WEB-INF/pages/fragments/head.jsp" />
+
 </head>
 <body>
-    <h1>Hello world</h1>
-    <a href="<c:url value="/cities" />">Cities</a>
+    <h1>Hello User.</h1>
+    <a href="<c:url value="/cities"/>" class="btn btn-primary">Cities</a>
+    <a href="<c:url value="/calcDistance"/>" class="btn btn-success">Calc Distance</a>
 </body>
 </html>
