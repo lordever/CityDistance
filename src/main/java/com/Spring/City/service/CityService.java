@@ -14,5 +14,4 @@ public interface CityService {
     public void updateCity(CityDistance cityDistance);
 
     public void removeCity(long id);
-
 }

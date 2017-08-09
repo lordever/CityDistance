@@ -18,6 +18,9 @@ public class AjaxResponseBody {
     @JsonView(Views.Public.class)
     private SearchCriteria resultCriteria;
 
+    @JsonView(Views.Public.class)
+    private CalcCriteria calcCriteria;
+
     public String getMessage() {
         return message;
     }
@@ -50,6 +53,14 @@ public class AjaxResponseBody {
         this.resultCriteria = resultCriteria;
     }
 
+    public CalcCriteria getCalcCriteria() {
+        return calcCriteria;
+    }
+
+    public void setCalcCriteria(CalcCriteria calcCriteria) {
+        this.calcCriteria = calcCriteria;
+    }
+
     @Override
     public String toString() {
         return "AjaxResponseBody{" +
@@ -57,6 +68,7 @@ public class AjaxResponseBody {
                 ", code='" + code + '\'' +
                 ", result=" + result +
                 ", resultCriteria=" + resultCriteria +
+                ", calcCriteria=" + calcCriteria +
                 '}';
     }
 }

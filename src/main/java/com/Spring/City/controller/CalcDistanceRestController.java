@@ -1,19 +1,27 @@
 package com.Spring.City.controller;
 
+import com.Spring.City.jsonview.Views;
+import com.Spring.City.model.AjaxResponseBody;
+import com.Spring.City.model.CalcCriteria;
 import com.Spring.City.model.CityDistance;
 import com.Spring.City.service.CityService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class CalcDistanceRestController {
     private CityService cityService;
-
+    private List<CityDistance> cities;
     @Autowired
     @Qualifier(value = "cityService")
     public void setCityService(CityService cityService) {
@@ -21,9 +29,35 @@ public class CalcDistanceRestController {
     }
 
     @RequestMapping(value = "calcDistance", method = RequestMethod.GET)
-    public String getCities(Model model){
+    public ModelAndView getCities(Model model) {
+        ModelAndView modelAndView = new ModelAndView("calcDistance");
+        cities = cityService.getCities();
         model.addAttribute("city", new CityDistance());
-        model.addAttribute("cities", cityService.getCities());
-        return "calcDistance";
+        model.addAttribute("cities", cities);
+        return modelAndView;
+    }
+
+    @JsonView(value = Views.Public.class)
+    @RequestMapping(value = "/calc")
+    public AjaxResponseBody calcDistance(@RequestBody CalcCriteria calcCriteria) {
+        AjaxResponseBody result = new AjaxResponseBody();
+
+//        if(isValidCriteria(calcCriteria)) {
+//            cities
+//        }else{
+//            result.setCode("400");
+//            result.setMessage("Search criteria is empty!");
+//        }
+        return result;
+    }
+
+    private boolean isValidCriteria(CalcCriteria calcCriteria) {
+        boolean isValid = true;
+
+        if (calcCriteria.getCityA().equals("") || calcCriteria.getCityA().equals("")) {
+            isValid = false;
+        }
+
+        return isValid;
     }
 }

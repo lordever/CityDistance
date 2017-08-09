@@ -39,7 +39,7 @@ public class CityRestController {
             result.setResultCriteria(criteria);
         } else {
             result.setCode("400");
-            result.setMessage("Search criteria is empty!");
+            result.setMessage("Criteria is empty!");
         }
 
         return result;
