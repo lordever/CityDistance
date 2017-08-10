@@ -32,6 +32,11 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
+    public boolean isExistCity(String fistCity, String secondCity) {
+        return this.cityDao.isExistCity(fistCity, secondCity);
+    }
+
+    @Override
     @Transactional
     public void removeCity(long id) {
         this.cityDao.removeCity(id);

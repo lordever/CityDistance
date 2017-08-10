@@ -1,6 +1,7 @@
 package com.Spring.City.dao;
 
 import com.Spring.City.model.CityDistance;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class CityDaoImpl implements CityDao {
     public CityDistance getCityById(long id) {
         Session session = this.sessionFactory.getCurrentSession();
         CityDistance cityDistance = (CityDistance) session.load(CityDistance.class, new Long(id));
-        logger.info("City successfully loaded. City: "+cityDistance);
+        logger.info("City successfully loaded. City: " + cityDistance);
 
         return cityDistance;
     }
@@ -53,7 +54,15 @@ public class CityDaoImpl implements CityDao {
     public void updateCity(CityDistance cityDistance) {
         Session session = this.sessionFactory.getCurrentSession();
         session.update(cityDistance);
-        logger.info("City successfully update. City details: "+cityDistance);
+        logger.info("City successfully update. City details: " + cityDistance);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean isExistCity(String fistCity, String secondCity) {
+        Session session = this.sessionFactory.getCurrentSession();
+        List<CityDistance> cities = session.createQuery("from CityDistance").list();
+        return cities.size() != 0;
     }
 
     @Override
@@ -61,7 +70,7 @@ public class CityDaoImpl implements CityDao {
         Session session = this.sessionFactory.getCurrentSession();
         CityDistance cityDistance = (CityDistance) session.load(CityDistance.class, new Long(id));
 
-        if(cityDistance != null)
+        if (cityDistance != null)
             session.delete(cityDistance);
 
         logger.info("City successfully removed. City details: " + cityDistance);

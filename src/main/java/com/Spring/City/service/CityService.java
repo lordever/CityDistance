@@ -13,5 +13,7 @@ public interface CityService {
 
     public void updateCity(CityDistance cityDistance);
 
+    public boolean isExistCity(String fistCity, String secondCity);
+
     public void removeCity(long id);
 }

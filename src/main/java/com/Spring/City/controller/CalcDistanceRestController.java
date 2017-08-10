@@ -13,15 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class CalcDistanceRestController {
     private CityService cityService;
     private List<CityDistance> cities;
+
     @Autowired
     @Qualifier(value = "cityService")
     public void setCityService(CityService cityService) {
@@ -42,12 +42,17 @@ public class CalcDistanceRestController {
     public AjaxResponseBody calcDistance(@RequestBody CalcCriteria calcCriteria) {
         AjaxResponseBody result = new AjaxResponseBody();
 
-//        if(isValidCriteria(calcCriteria)) {
-//            cities
-//        }else{
-//            result.setCode("400");
-//            result.setMessage("Search criteria is empty!");
-//        }
+        if (isValidCriteria(calcCriteria)) {
+            if (cityService.isExistCity(calcCriteria.getCityA(), calcCriteria.getCityB())) {
+                result.setCode("200");
+                result.setMessage(calcCriteria.getCityA() + " and " + calcCriteria.getCityB() + " exist in database");
+            }
+            else{
+                result.setCode("402");
+                result.setMessage(calcCriteria.getCityA() + " and " + calcCriteria.getCityB() + " not exist in database");
+            }
+        }
+
         return result;
     }
 
