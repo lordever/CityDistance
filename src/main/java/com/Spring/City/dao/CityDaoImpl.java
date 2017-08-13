@@ -44,7 +44,7 @@ public class CityDaoImpl implements CityDao {
     @Override
     public CityDistance getCityById(long id) {
         Session session = this.sessionFactory.getCurrentSession();
-        CityDistance cityDistance = (CityDistance) session.load(CityDistance.class, new Long(id));
+        CityDistance cityDistance = (CityDistance) session.get(CityDistance.class, new Long(id));
         logger.info("City successfully loaded. City: " + cityDistance);
 
         return cityDistance;

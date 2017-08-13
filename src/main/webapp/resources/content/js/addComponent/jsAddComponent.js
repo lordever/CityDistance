@@ -1,25 +1,139 @@
 $(document).ready(function () {
-    $('.jsSaveBtn').click(function () {
-        fillFields('addition');
+    var body = $('body');
+    body.on('click','.jsSaveBtn',function() {
+        addCity();
     });
-    $('.jsEditBtn').click(function () {
-        fillFields('edit');
+    body.on('click','.jsEditBtn',function() {
+        fillFields();
+    });
+    body.on('click','.jsFillForEditBtn',function() {
+        $('.additionBlock').addClass('hidden').removeClass('show');
+        $('.editBlock').addClass('show').removeClass('hidden');
+        getCity($(this).val());
+    });
+    body.on('click','.toAdditionCity',function() {
+        toAddition();
+    });
+    body.on('click','.jsEditBtn',function() {
+        editCity();
+    });
+    body.on('click','.jsDeleteBtn',function() {
+        deleteCity($(this).val());
     });
 });
+function getCity(id){
+    $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/rest/get/' + id,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            prepareForEdit(s);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+function prepareForEdit(city) {
+    $('.jsCityId').val(city.id);
+    $('.jsCityA').val(city.cityA);
+    $('.jsCityB').val(city.cityB);
+    $('.jsDistance').val(city.distance);
+}
+function addCity() {
+    var city = fillFields();
 
-function fillFields(marker) {
+    $.ajax({
+        type: 'POST',
+        url: window.location.origin + '/rest/add',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(city),
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            console.log('SUCCESS: ' + s.id + ' ' +
+                s.cityA + ' ' +
+                s.cityB + ' ' +
+                s.distance);
+            displayTable();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+function editCity() {
+    var city = fillFields();
+
+    $.ajax({
+        type: 'PUT',
+        url: window.location.origin + '/rest/edit',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(city),
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            console.log('SUCCESS: ' + s.id + ' ' +
+                s.cityA + ' ' +
+                s.cityB + ' ' +
+                s.distance);
+            displayTable();
+            toAddition();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+
+function deleteCity(id) {
+    $.ajax({
+        type: 'DELETE',
+        url: window.location.origin + '/rest/delete/' + id,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            console.log('SUCCESS: ' + s.id + ' ' +
+                s.cityA + ' ' +
+                s.cityB + ' ' +
+                s.distance);
+            displayTable();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+
+function fillFields() {
     var formValid = isValid();
+    var toPass = {};
     if (formValid) {
-        var toPass = {};
         toPass["id"] = $('#jsCityId').val();
         toPass["cityA"] = $('#jsCityA').val();
         toPass["cityB"] = $('#jsCityB').val();
         toPass["distance"] = $('#jsDistance').val();
-        if (marker === 'addition')
-            sendData(toPass, marker);
-        if (marker === 'edit')
-            sendData(toPass, marker);
     }
+    return toPass;
 }
 
 function isValid() {
@@ -35,49 +149,35 @@ function isValid() {
             formGroup.addClass('has-error').removeClass('has-success');
             isValid = false;
         }
-        if(index === size -1 && $(this).val() === '0'){
+        if (index === size - 1 && $(this).val() === '0') {
             formGroup.addClass('has-error').removeClass('has-success');
         }
     });
     return isValid;
 }
 
-function sendData(toPass, marker) {
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: window.location.origin + '/rest/post',
-        data: JSON.stringify(toPass),
-        dataType: 'json',
-        timeout: 100000,
-        success: function (data) {
-            console.log('SUCCESS: ', data);
-            display(data, marker);
-        },
-        error: function (e) {
-            console.log('ERROR: ', e);
-            display(e, 'error');
-        },
-        done: function (d) {
-            console.log("DONE: ", d);
-            display(d, marker);
+function displayTable() {
+    nullifyFields();
+    var table = $('#jsTable');
+    if (table.length === 0)
+        location.href = '/cities';
+    table.load(window.location.href + " #jsTable");
+}
+
+function nullifyFields() {
+    var inputs = $('input');
+    inputs.each(function (index) {
+        var formGroup = $(this).parent();
+        if (index === 0)
+            $(this).val('0');
+        else {
+            $(this).val('');
         }
+        formGroup.removeClass('has-error').removeClass('has-success');
     });
 }
 
-function display(data, marker) {
-    var table = $('#jsTable');
-    if (marker === 'edit' || table.length === 0)
-        redirectToCities();
-    if (marker === 'addition' || marker === 'error') {
-        var json = "<h4>Ajax Response</h4><pre>"
-            + JSON.stringify(data, null, 4) + "</pre>";
-        $('#feedback').html(json);
-        table.load(window.location.href + " #jsTable");
-    }
-}
-
-function redirectToCities(){
-    location.href = '/cities';
-    location.hash = '/cities';
+function toAddition() {
+    $('.additionBlock').addClass('show').removeClass('hidden');
+    $('.editBlock').addClass('hidden').removeClass('show');
 }

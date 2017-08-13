@@ -13,6 +13,8 @@
 
 <div class="container" style="min-height: 500px">
 
+
+
     <c:if test="${! empty cities}">
         <div class="row" id="jsTable">
             <div class="col-md-6 col-md-offset-3">
@@ -32,8 +34,12 @@
                         <td>${city.cityA}</td>
                         <td>${city.cityB}</td>
                         <td>${city.distance}</td>
-                        <td><a href="<c:url value='/edit/${city.id}'/>">Edit</a></td>
-                        <td><a href="<c:url value='/rest/remove/${city.id}' />" class="jsDeleteLink">Delete</a></td>
+                        <td>
+                            <button class="btn btn-warning jsFillForEditBtn" type="button" value="${city.id}">Edit</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger jsDeleteBtn" type="button" value="${city.id}">Delete</button>
+                        </td>
                     </tr>
                     </c:forEach>
                 </table>
@@ -43,11 +49,10 @@
     <div class="row" id="jsForm">
         <div class="col-md-6 col-md-offset-3">
             <h2 class="text-center">Add new city</h2>
-            <c:url var="addAction" value="/rest/post"/>
-            <form action="${addAction}">
+            <form>
                 <div class="form-group jsIdForm">
                     <label class="control-label" for="jsCityId">ID</label>
-                    <input class="form-control" id="jsCityId" name="id" readonly size="8" disabled value="${city.id}"/>
+                    <input class="form-control jsCityId" id="jsCityId" name="id" readonly size="8" disabled value="${city.id}"/>
                     <input class="form-control" name="id" type="hidden"/>
                 </div>
                 <div class="form-group">
@@ -62,20 +67,20 @@
                     <label class="control-label" for="jsDistance">Distance</label>
                     <input class="form-control jsDistance" id="jsDistance" name="distance" value="${city.distance}"/>
                 </div>
-                <c:if test="${!empty city.cityA}">
-                    <button class="btn btn-primary jsEditBtn" type="button">Edit</button>
-                    <a href="<c:url value="/cities"/>" class="btn btn-default">To add new City</a>
-                </c:if>
-                <c:if test="${empty city.cityA}">
+                <div class="show additionBlock">
                     <button class="btn btn-primary jsSaveBtn" type="button">Save</button>
-                </c:if>
-                <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
-                <a href="<c:url value="/calcDistance"/>" class="btn btn-success">Calculate Distance</a>
+                    <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
+                    <a href="<c:url value="/calcDistance"/>" class="btn btn-success">Calculate Distance</a>
+                </div>
+                <div class="hidden editBlock">
+                    <button class="btn btn-primary jsEditBtn" type="button">Edit</button>
+                    <button class="btn btn-default toAdditionCity">To add new City</button>
+                    <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
+                    <a href="<c:url value="/calcDistance"/>" class="btn btn-success">Calculate Distance</a>
+                </div>
             </form>
         </div>
     </div>
-
-    <div id="feedback"></div>
 </div>
 </body>
 </html>

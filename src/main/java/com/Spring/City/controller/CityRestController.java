@@ -1,19 +1,16 @@
 package com.Spring.City.controller;
 
-import com.Spring.City.jsonview.Views;
-import com.Spring.City.model.AjaxResponseBody;
 import com.Spring.City.model.CityDistance;
-import com.Spring.City.model.SearchCriteria;
 import com.Spring.City.service.CityService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@RestController
+@Controller
 public class CityRestController {
 
     private CityService cityService;
@@ -24,79 +21,55 @@ public class CityRestController {
         this.cityService = cityService;
     }
 
-    @JsonView(Views.Public.class)
-    @RequestMapping(value = "rest/post")
-    public AjaxResponseBody addCity(@RequestBody SearchCriteria criteria) {
-        AjaxResponseBody result = new AjaxResponseBody();
+    @RequestMapping(value = "cities", method = RequestMethod.GET)
+    public String cities(Model model) {
+        model.addAttribute("city", new CityDistance());
+        model.addAttribute("cities", this.cityService.getCities());
 
-        if (isValidSearchCriteria(criteria)) {
-            if (criteria.getId() == 0)
-                cityService.addCity(buildCityDistance(criteria));
-            else
-                cityService.updateCity(buildCityDistance(criteria));
-            result.setCode("200");
-            result.setMessage("");
-            result.setResultCriteria(criteria);
-        } else {
-            result.setCode("400");
-            result.setMessage("Criteria is empty!");
-        }
-
-        return result;
+        return "cities";
     }
 
-    @JsonView(Views.Public.class)
+    @RequestMapping(value = "rest/add")
+    public @ResponseBody CityDistance addCity(@RequestBody CityDistance cityDistance) {
+        if(isValid(cityDistance)){
+            this.cityService.addCity(cityDistance);
+        }
+        return cityDistance;
+    }
+
+    @RequestMapping(value = "rest/get/{id}")
+    public @ResponseBody CityDistance getCity(@PathVariable(value = "id") long id) {
+        return cityService.getCityById(id);
+    }
+
     @RequestMapping(value = "rest/edit")
-    public AjaxResponseBody updateCity(@RequestBody SearchCriteria criteria) {
-        AjaxResponseBody result = new AjaxResponseBody();
-
-        if (isValidSearchCriteria(criteria)) {
-            cityService.updateCity(buildCityDistance(criteria));
-
-            result.setCode("200");
-            result.setMessage("");
-            result.setResultCriteria(criteria);
-        } else {
-            result.setCode("400");
-            result.setMessage("Search criteria is empty!");
+    public @ResponseBody CityDistance updateCity(@RequestBody CityDistance cityDistance) {
+        if(isValid(cityDistance)){
+            this.cityService.updateCity(cityDistance);
         }
-
-        return result;
+        return cityDistance;
     }
 
-    @RequestMapping(value = "rest/remove/{id}", method = RequestMethod.GET)
-    public void removeCity(@PathVariable(value = "id") long id, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "rest/delete/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody CityDistance removeCity(@PathVariable(value = "id") long id) throws IOException {
         this.cityService.removeCity(id);
-        resp.sendRedirect("/cities");
+
+        return new CityDistance();
     }
 
-
-    private boolean isValidSearchCriteria(SearchCriteria criteria) {
+    private boolean isValid(CityDistance cityDistance) {
         boolean valid = true;
 
-        if (criteria == null)
+        if (cityDistance == null)
             valid = false;
-        else if (criteria.getCityA().equals(""))
+        else if (cityDistance.getCityA().equals(""))
             valid = false;
-        else if (criteria.getCityB().equals(""))
+        else if (cityDistance.getCityB().equals(""))
             valid = false;
-        else if (criteria.getDistance() <= 0)
+        else if (cityDistance.getDistance() <= 0)
             valid = false;
 
         return valid;
-    }
-
-    private CityDistance buildCityDistance(SearchCriteria criteria) {
-        CityDistance cityDistance = new CityDistance();
-
-        if (criteria.getId() != 0) {
-            cityDistance.setId(criteria.getId());
-        }
-        cityDistance.setCityA(criteria.getCityA());
-        cityDistance.setCityB(criteria.getCityB());
-        cityDistance.setDistance(criteria.getDistance());
-
-        return cityDistance;
     }
 
 }
