@@ -4,7 +4,9 @@
 <head>
     <title>Calc Distance</title>
     <c:import url="fragments/head.jsp"/>
-    <script src="<c:url value="/resources/content/js/calcComponent/jsCalcComponent.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/content/js/calcComponent/jsCalcComponent.js"/>"
+            type="text/javascript"></script>
+    <link rel="stylesheet" href="<c:url value="/resources/content/styles/style.css"/>"/>
 </head>
 <body>
 <div class="container" style="min-height: 500px">
@@ -39,11 +41,11 @@
             <form action="${calcAction}">
                 <div class="form-group">
                     <label class="control-label" for="jsCityA">First City</label>
-                    <input class="form-control jsCityA" id="jsCityA" name="cityA"/>
+                    <input class="form-control jsCityFrom" id="jsCityA" name="cityA"/>
                 </div>
                 <div class="form-group jsCityBForm">
                     <label class="control-label" for="jsCityB">Second City</label>
-                    <input class="form-control jsCityB" id="jsCityB" name="cityB"/>
+                    <input class="form-control jsCityTo" id="jsCityB" name="cityB"/>
                 </div>
                 <button class="btn btn-success jsCalc" type="button">Calculate</button>
             </form>
@@ -51,8 +53,11 @@
             <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
         </div>
     </div>
-    <div id="feedback"></div>
+    <div class="hidden resultContainer">
+        <div class="jumbotron resultBotron">
+            <h2>Result!</h2>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

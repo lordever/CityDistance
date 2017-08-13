@@ -7,7 +7,7 @@
 <head>
     <title>Cities</title>
     <c:import url="fragments/head.jsp"/>
-    <script src="<c:url value="/resources/content/js/addComponent/jsAddComponent.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/content/js/cityRedactorComponent/jsCityRedactorComponent.js"/>" type="text/javascript"></script>
 </head>
 <body>
 

@@ -4,7 +4,7 @@ $(document).ready(function () {
         addCity();
     });
     body.on('click','.jsEditBtn',function() {
-        fillFields();
+        getCityFromFields();
     });
     body.on('click','.jsFillForEditBtn',function() {
         $('.additionBlock').addClass('hidden').removeClass('show');
@@ -47,7 +47,7 @@ function prepareForEdit(city) {
     $('.jsDistance').val(city.distance);
 }
 function addCity() {
-    var city = fillFields();
+    var city = getCityFromFields();
 
     $.ajax({
         type: 'POST',
@@ -73,7 +73,7 @@ function addCity() {
     });
 }
 function editCity() {
-    var city = fillFields();
+    var city = getCityFromFields();
 
     $.ajax({
         type: 'PUT',
@@ -124,7 +124,7 @@ function deleteCity(id) {
     });
 }
 
-function fillFields() {
+function getCityFromFields() {
     var formValid = isValid();
     var toPass = {};
     if (formValid) {

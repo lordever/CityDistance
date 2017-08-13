@@ -1,43 +1,86 @@
 $(document).ready(function () {
-    $('.jsCalc').click(function () {
-        fillFields();
+    var body = $('body');
+    body.on('click','.jsCalc',function() {
+        cleanResult();
+        calculate();
+    });
+    body.on('click','.jsCalcClean',function() {
+        cleanResult();
     });
 });
+function calculate() {
+    var city = getCityObject();
 
-function fillFields(){
-    var toPass = {};
-    toPass["cityA"] = $('#jsCityA').val();
-    toPass["cityB"] = $('#jsCityB').val();
-
-    sendData(toPass);
-}
-
-function sendData(toPass){
     $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: 'http://localhost:8080/calc',
-        data: JSON.stringify(toPass),
+        type: 'POST',
+        url: window.location.origin + '/rest/calc/',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(city),
+        async: true,
         dataType: 'json',
-        timeout: 100000,
-        success: function (data) {
-            console.log('SUCCESS: ', data);
-            display(data);
+        success: function (s) {
+            console.log(s);
+            getPath(s);
         },
-        error: function (e) {
-            console.log('ERROR: ', e);
-            display(e);
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
         },
         done: function (d) {
-            console.log("DONE: ", d);
-            display(d);
+            console.log('DONE: ' + d);
+        }
+    });
+}
+function getCityObject() {
+    var city = {};
+
+    city['id'] = 0;
+    city['cityA'] = $('.jsCityFrom').val();
+    city['cityB'] = $('.jsCityTo').val();
+    city['distance'] = 0;
+
+    return city;
+}
+function getPath(minDistance){
+    $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/rest/path/',
+        contentType: 'application/json; charset=utf-8',
+        async: true,
+        dataType: 'json',
+        success: function (s) {
+            displayResult(s, minDistance);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
         }
     });
 }
 
-function display(data) {
-    var json = "<h4>Ajax Response</h4><pre>"
-        + JSON.stringify(data, null, 4) + "</pre>";
-    $('#feedback').html(json);
+function displayResult(path, minDistance){
+    var pathText = '';
+    var resultBotron = $('.resultBotron');
+    path.forEach(function(item, index){
+        pathText += item.name;
+        if(index !== path.length -1){
+            pathText += ' > ';
+        }
+    });
+    resultBotron.append('<p>Minimal Path: '+pathText+'</p>');
+    resultBotron.append('<p>Minimal Distance: '+minDistance+'</p>');
+    resultBotron.append('<button class="btn btn-primary jsCalcClean" type="button">Clean</button>');
+    $('.resultContainer').addClass('show').removeClass('hidden');
 }
+
+function cleanResult() {
+    $('p').remove();
+    $('.jsCalcClean').remove();
+    $('.resultContainer').addClass('hidden').removeClass('show');
+}
+
+
 

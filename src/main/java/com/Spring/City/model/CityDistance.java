@@ -1,8 +1,5 @@
 package com.Spring.City.model;
 
-import com.Spring.City.jsonview.Views;
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
 
 @Entity
@@ -11,19 +8,15 @@ public class CityDistance {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.Public.class)
     private long id;
 
     @Column(name = "CITY_A")
-    @JsonView(Views.Public.class)
     private String cityA;
 
     @Column(name = "CITY_B")
-    @JsonView(Views.Public.class)
     private String cityB;
 
     @Column(name = "DISTANCE")
-    @JsonView(Views.Public.class)
     private int distance;
 
     public long getId() {
