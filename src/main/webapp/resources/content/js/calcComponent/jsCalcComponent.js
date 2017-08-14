@@ -58,9 +58,8 @@ function calculate() {
         data: JSON.stringify(city),
         async: true,
         dataType: 'json',
-        success: function (s) {
-            console.log(s);
-            getPath(s);
+        success: function (result) {
+            displayResult(result.path, result.minDistance);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.status + ' ' + jqXHR.responseText);
@@ -80,25 +79,6 @@ function getCityObject() {
     city['distance'] = 0;
 
     return city;
-}
-function getPath(minDistance){
-    $.ajax({
-        type: 'GET',
-        url: window.location.origin + '/rest/path/',
-        contentType: 'application/json; charset=utf-8',
-        async: true,
-        dataType: 'json',
-        success: function (s) {
-            displayResult(s, minDistance);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.status + ' ' + jqXHR.responseText);
-            console.log(errorThrown)
-        },
-        done: function (d) {
-            console.log('DONE: ' + d);
-        }
-    });
 }
 
 function displayResult(path, minDistance){
