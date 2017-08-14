@@ -5,10 +5,10 @@ import com.Spring.City.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class CityRestController {
@@ -22,14 +22,16 @@ public class CityRestController {
     }
 
     @RequestMapping(value = "cities", method = RequestMethod.GET)
-    public String cities(Model model) {
-        model.addAttribute("city", new CityDistance());
-        model.addAttribute("cities", this.cityService.getCities());
-
+    public String cities() {
         return "cities";
     }
 
-    @RequestMapping(value = "rest/add")
+    @RequestMapping(value = "rest/getCities", method = RequestMethod.GET)
+    public @ResponseBody List<CityDistance> getCities() {
+        return cityService.getCities();
+    }
+
+    @RequestMapping(value = "rest/add", method = RequestMethod.POST)
     public @ResponseBody CityDistance addCity(@RequestBody CityDistance cityDistance) {
         if(isValid(cityDistance)){
             this.cityService.addCity(cityDistance);
@@ -37,12 +39,12 @@ public class CityRestController {
         return cityDistance;
     }
 
-    @RequestMapping(value = "rest/get/{id}")
+    @RequestMapping(value = "rest/get/{id}", method = RequestMethod.GET)
     public @ResponseBody CityDistance getCity(@PathVariable(value = "id") long id) {
         return cityService.getCityById(id);
     }
 
-    @RequestMapping(value = "rest/edit")
+    @RequestMapping(value = "rest/edit", method = RequestMethod.PUT)
     public @ResponseBody CityDistance updateCity(@RequestBody CityDistance cityDistance) {
         if(isValid(cityDistance)){
             this.cityService.updateCity(cityDistance);

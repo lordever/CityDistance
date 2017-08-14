@@ -36,7 +36,7 @@ public class CalcDistanceRestController {
     }
 
     @RequestMapping(value = "rest/calc", method = RequestMethod.POST)
-    public @ResponseBody Integer calcCityDistance(@RequestBody CityDistance cityDistance, Model model){
+    public @ResponseBody Integer calcCityDistance(@RequestBody CityDistance cityDistance){
         String fromCity = cityDistance.getCityA();
         String toCity = cityDistance.getCityB();
         List<CityDistance> cities = cityService.getCities();

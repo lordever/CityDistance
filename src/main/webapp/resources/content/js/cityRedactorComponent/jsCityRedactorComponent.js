@@ -1,27 +1,74 @@
 $(document).ready(function () {
+    getCities();
     var body = $('body');
-    body.on('click','.jsSaveBtn',function() {
+    body.on('click', '.jsSaveBtn', function () {
         addCity();
     });
-    body.on('click','.jsEditBtn',function() {
+    body.on('click', '.jsEditBtn', function () {
         getCityFromFields();
     });
-    body.on('click','.jsFillForEditBtn',function() {
+    body.on('click', '.jsFillForEditBtn', function () {
         $('.additionBlock').addClass('hidden').removeClass('show');
         $('.editBlock').addClass('show').removeClass('hidden');
         getCity($(this).val());
     });
-    body.on('click','.toAdditionCity',function() {
+    body.on('click', '.toAdditionCity', function () {
         toAddition();
     });
-    body.on('click','.jsEditBtn',function() {
+    body.on('click', '.jsEditBtn', function () {
         editCity();
     });
-    body.on('click','.jsDeleteBtn',function() {
+    body.on('click', '.jsDeleteBtn', function () {
         deleteCity($(this).val());
     });
 });
-function getCity(id){
+
+function getCities() {
+    $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/rest/getCities/',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            fillTable(s);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+
+function fillTable(items) {
+    var tableTemplate = '';
+    var citiesTable = $('.jsCitiesTable');
+    items.forEach(function (item) {
+        tableTemplate += '<tr class="jsTableContent">\n' +
+            '   <td>'+item.id+'</td>\n' +
+            '   <td>'+item.cityA+'</td>\n' +
+            '   <td>'+item.cityB+'</td>\n' +
+            '   <td>'+item.distance+'</td>\n' +
+            '   <td>\n' +
+            '       <button class="btn btn-warning jsFillForEditBtn" type="button" value="'+item.id+'">Edit</button>\n' +
+            '   </td>\n' +
+            '   <td>\n' +
+            '       <button class="btn btn-danger jsDeleteBtn" type="button" value="'+item.id+'">Delete</button>\n' +
+            '   </td>\n' +
+            '</tr>';
+    });
+    if(citiesTable.length === 0)
+        citiesTable.append(tableTemplate);
+    else {
+        $('.jsTableContent').remove();
+        citiesTable.append(tableTemplate);
+    }
+}
+
+function getCity(id) {
     $.ajax({
         type: 'GET',
         url: window.location.origin + '/rest/get/' + id,
@@ -40,12 +87,14 @@ function getCity(id){
         }
     });
 }
+
 function prepareForEdit(city) {
     $('.jsCityId').val(city.id);
     $('.jsCityA').val(city.cityA);
     $('.jsCityB').val(city.cityB);
     $('.jsDistance').val(city.distance);
 }
+
 function addCity() {
     var city = getCityFromFields();
 
@@ -72,6 +121,7 @@ function addCity() {
         }
     });
 }
+
 function editCity() {
     var city = getCityFromFields();
 
@@ -101,6 +151,7 @@ function editCity() {
 }
 
 function deleteCity(id) {
+    console.log('ID Delete:'+id);
     $.ajax({
         type: 'DELETE',
         url: window.location.origin + '/rest/delete/' + id,
@@ -161,7 +212,7 @@ function displayTable() {
     var table = $('#jsTable');
     if (table.length === 0)
         location.href = '/cities';
-    table.load(window.location.href + " #jsTable");
+    getCities();
 }
 
 function nullifyFields() {
