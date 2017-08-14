@@ -10,35 +10,21 @@
 </head>
 <body>
 <div class="container" style="min-height: 500px">
-    <c:if test="${! empty cities}">
-        <div class="row" id="jsTable">
-            <div class="col-md-6 col-md-offset-3">
-                <table class="table">
-                    <tr>
-                        <th>City A</th>
-                        <th>City B</th>
-                        <th>Distance</th>
-                    </tr>
-                    <tr>
-                        <c:forEach items="${cities}" var="city">
-                    <tr>
-                        <td>${city.cityA}</td>
-                        <td>${city.cityB}</td>
-                        <td>${city.distance}</td>
-                    </tr>
-                    </c:forEach>
-                </table>
-            </div>
+    <div class="row" id="jsTable">
+        <div class="col-md-6 col-md-offset-3">
+            <table class="table jsCitiesTableCalc">
+                <tr>
+                    <th>City A</th>
+                    <th>City B</th>
+                    <th>Distance</th>
+                </tr>
+            </table>
         </div>
-    </c:if>
-    <c:if test="${empty cities}">
-        <h2 class="text-center">None cities</h2>
-    </c:if>
+    </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h2 class="text-center">Calculate distance between cities</h2>
-            <c:url value="/calcDistance" var="calcAction"/>
-            <form action="${calcAction}">
+            <form>
                 <div class="form-group">
                     <label class="control-label" for="jsCityA">First City</label>
                     <input class="form-control jsCityFrom" id="jsCityA" name="cityA"/>

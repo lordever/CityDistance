@@ -28,12 +28,15 @@ public class CalcDistanceRestController {
     }
 
     @RequestMapping(value = "calcDistance", method = RequestMethod.GET)
-    public String cities(Model model) {
-        model.addAttribute("city", new CityDistance());
-        model.addAttribute("cities", this.cityService.getCities());
-
+    public String cities() {
         return "calcDistance";
     }
+
+    @RequestMapping(value = "rest/getCitiesForCalc", method = RequestMethod.GET)
+    public @ResponseBody List<CityDistance> getCities() {
+        return cityService.getCities();
+    }
+
 
     @RequestMapping(value = "rest/calc", method = RequestMethod.POST)
     public @ResponseBody Integer calcCityDistance(@RequestBody CityDistance cityDistance){

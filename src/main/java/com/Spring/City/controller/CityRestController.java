@@ -26,7 +26,7 @@ public class CityRestController {
         return "cities";
     }
 
-    @RequestMapping(value = "rest/getCities", method = RequestMethod.GET)
+    @RequestMapping(value = "rest/getCitiesForRedactor", method = RequestMethod.GET)
     public @ResponseBody List<CityDistance> getCities() {
         return cityService.getCities();
     }

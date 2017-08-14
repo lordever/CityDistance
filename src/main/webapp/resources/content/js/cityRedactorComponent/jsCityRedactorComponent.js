@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    getCities();
+    getCitiesForRedactor();
     var body = $('body');
     body.on('click', '.jsSaveBtn', function () {
         addCity();
@@ -23,15 +23,15 @@ $(document).ready(function () {
     });
 });
 
-function getCities() {
+function getCitiesForRedactor() {
     $.ajax({
         type: 'GET',
-        url: window.location.origin + '/rest/getCities/',
+        url: window.location.origin + '/rest/getCitiesForRedactor/',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         async: true,
         success: function (s) {
-            fillTable(s);
+            fillTableForRedactor(s);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.status + ' ' + jqXHR.responseText);
@@ -43,11 +43,11 @@ function getCities() {
     });
 }
 
-function fillTable(items) {
+function fillTableForRedactor(items) {
     var tableTemplate = '';
-    var citiesTable = $('.jsCitiesTable');
+    var citiesTable = $('.jsCitiesTableRedactor');
     items.forEach(function (item) {
-        tableTemplate += '<tr class="jsTableContent">\n' +
+        tableTemplate += '<tr class="jsTableContentRedactor">\n' +
             '   <td>'+item.id+'</td>\n' +
             '   <td>'+item.cityA+'</td>\n' +
             '   <td>'+item.cityB+'</td>\n' +
@@ -63,7 +63,7 @@ function fillTable(items) {
     if(citiesTable.length === 0)
         citiesTable.append(tableTemplate);
     else {
-        $('.jsTableContent').remove();
+        $('.jsTableContentRedactor').remove();
         citiesTable.append(tableTemplate);
     }
 }
@@ -212,7 +212,7 @@ function displayTable() {
     var table = $('#jsTable');
     if (table.length === 0)
         location.href = '/cities';
-    getCities();
+    getCitiesForRedactor();
 }
 
 function nullifyFields() {

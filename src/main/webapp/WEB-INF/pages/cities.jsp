@@ -15,7 +15,7 @@
 <div class="container" style="min-height: 500px">
     <div class="row" id="jsTable">
         <div class="col-md-6 col-md-offset-3">
-            <table class="table jsCitiesTable">
+            <table class="table jsCitiesTableRedactor">
                 <tr>
                     <th>ID</th>
                     <th>City A</th>

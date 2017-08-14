@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    getCitiesForCalc();
     var body = $('body');
     body.on('click','.jsCalc',function() {
         cleanResult();
@@ -8,6 +9,45 @@ $(document).ready(function () {
         cleanResult();
     });
 });
+
+function getCitiesForCalc() {
+    $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/rest/getCitiesForCalc/',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            fillTableForCalc(s);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+
+function fillTableForCalc(items) {
+    var tableTemplate = '';
+    var citiesTable = $('.jsCitiesTableCalc');
+    items.forEach(function (item) {
+        tableTemplate += '<tr class="jsTableContentCalc">\n' +
+            '  <td>'+item.cityA+'</td>\n' +
+            '  <td>'+item.cityB+'</td>\n' +
+            '  <td>'+item.distance+'</td>\n' +
+            '</tr>\n';
+    });
+    if (citiesTable.length === 0)
+        citiesTable.append(tableTemplate);
+    else {
+        $('.jsTableContentCalc').remove();
+        citiesTable.append(tableTemplate);
+    }
+}
+
 function calculate() {
     var city = getCityObject();
 
