@@ -39,7 +39,7 @@
             <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
         </div>
     </div>
-    <div class="hidden resultContainer">
+    <div class="sr-only resultContainer">
         <div class="jumbotron resultBotron">
             <h2>Result!</h2>
         </div>

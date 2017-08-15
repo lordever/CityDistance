@@ -13,7 +13,7 @@
 <body>
 
 <div class="container" style="min-height: 500px">
-    <div class="row" id="jsTable">
+    <div class="row justify-content-md-center" id="jsTable">
         <div class="col-md-6 col-md-offset-3">
             <table class="table jsCitiesTableRedactor">
                 <tr>
@@ -27,7 +27,7 @@
             </table>
         </div>
     </div>
-    <div class="row" id="jsForm">
+    <div class="row justify-content-md-center" id="jsForm">
         <div class="col-md-6 col-md-offset-3">
             <h2 class="text-center">Add new city</h2>
             <form>
@@ -54,7 +54,7 @@
                     <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>
                     <a href="<c:url value="/calcDistance"/>" class="btn btn-success">Calculate Distance</a>
                 </div>
-                <div class="hidden editBlock">
+                <div class="editBlock sr-only">
                     <button class="btn btn-primary jsEditBtn" type="button">Edit</button>
                     <button class="btn btn-default toAdditionCity">To add new City</button>
                     <a href="<c:url value="/index.jsp"/>" class="btn btn-warning">Cancel</a>

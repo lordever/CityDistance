@@ -8,8 +8,8 @@ $(document).ready(function () {
         getCityFromFields();
     });
     body.on('click', '.jsFillForEditBtn', function () {
-        $('.additionBlock').addClass('hidden').removeClass('show');
-        $('.editBlock').addClass('show').removeClass('hidden');
+        $('.additionBlock').addClass('sr-only');
+        $('.editBlock').removeClass('sr-only');
         getCity($(this).val());
     });
     body.on('click', '.toAdditionCity', function () {
@@ -229,6 +229,6 @@ function nullifyFields() {
 }
 
 function toAddition() {
-    $('.additionBlock').addClass('show').removeClass('hidden');
-    $('.editBlock').addClass('hidden').removeClass('show');
+    $('.additionBlock').removeClass('sr-only');
+    $('.editBlock').addClass('sr-only');
 }

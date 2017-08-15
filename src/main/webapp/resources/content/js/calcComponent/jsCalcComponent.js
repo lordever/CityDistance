@@ -93,13 +93,13 @@ function displayResult(path, minDistance){
     resultBotron.append('<p>Minimal Path: '+pathText+'</p>');
     resultBotron.append('<p>Minimal Distance: '+minDistance+'</p>');
     resultBotron.append('<button class="btn btn-primary jsCalcClean" type="button">Clean</button>');
-    $('.resultContainer').addClass('show').removeClass('hidden');
+    $('.resultContainer').removeClass('sr-only');
 }
 
 function cleanResult() {
     $('p').remove();
     $('.jsCalcClean').remove();
-    $('.resultContainer').addClass('hidden').removeClass('show');
+    $('.resultContainer').addClass('sr-only');
 }
 
 
