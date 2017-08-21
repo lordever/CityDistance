@@ -64,5 +64,7 @@
         </div>
     </div>
 </div>
+<button class="btn btn-warning jsSessionGet">Get</button>
+<button class="btn btn-warning jsSessionAdd">Add</button>
 </body>
 </html>

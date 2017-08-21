@@ -1,7 +1,10 @@
 package com.Spring.City.controller;
 
+import com.Spring.City.model.City;
 import com.Spring.City.model.CityDistance;
 import com.Spring.City.service.CityService;
+import com.Spring.City.service.CityServiceSession;
+import com.Spring.City.sessionbean.SessionBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,10 @@ import java.util.List;
 public class CityRestController {
 
     private CityService cityService;
+
+    private SessionBean sessionBean = new SessionBean();
+
+    private CityServiceSession serviceSession = sessionBean.cityService();
 
     @Autowired
     @Qualifier(value = "cityService")
@@ -72,6 +79,18 @@ public class CityRestController {
             valid = false;
 
         return valid;
+    }
+
+//    Session test
+    @RequestMapping(value = "rest/getFromSession", method = RequestMethod.GET)
+    public @ResponseBody List<City> getCitiesFromSession(){
+        return this.serviceSession.getAll();
+    }
+
+    @RequestMapping(value = "rest/addToSession", method = RequestMethod.POST)
+    public @ResponseBody City addToSession(@RequestBody City city){
+        this.serviceSession.add(city);
+        return city;
     }
 
 }

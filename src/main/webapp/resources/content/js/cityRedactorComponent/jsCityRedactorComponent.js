@@ -21,7 +21,61 @@ $(document).ready(function () {
     body.on('click', '.jsDeleteBtn', function () {
         deleteCity($(this).val());
     });
+    body.on('click', '.jsSessionGet', function () {
+        getCityFromSession();
+    });
+    body.on('click', '.jsSessionAdd', function () {
+        addCityToSession();
+    });
 });
+function getCityFromSession() {
+    $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/rest/getFromSession/',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            s.forEach(function(item){
+                console.log(item.id + ' ' + item.firstCity + ' ' + item.secondCity + ' ' + item.distance);
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
+function addCityToSession() {
+    var city = {
+        id: 6,
+        firstCity: 'City A',
+        secondCity: 'City B',
+        distance: 32
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: window.location.origin + '/rest/addToSession',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(city),
+        dataType: 'json',
+        async: true,
+        success: function (s) {
+            console.log('Success');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            console.log(errorThrown)
+        },
+        done: function (d) {
+            console.log('DONE: ' + d);
+        }
+    });
+}
 
 function getCitiesForRedactor() {
     $.ajax({

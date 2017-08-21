@@ -53,7 +53,7 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 
-    <bean id="cityService" class="com.Spring.City.service.CityServiceImpl">
+    <bean id="cityService" class="com.Spring.City.service.impl.CityServiceImpl">
         <property name="cityDao" ref="cityDao"/>
     </bean>
 

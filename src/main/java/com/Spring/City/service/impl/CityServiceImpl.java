@@ -1,14 +1,15 @@
-package com.Spring.City.service;
+package com.Spring.City.service.impl;
 
 import com.Spring.City.dao.CityDao;
 import com.Spring.City.model.CityDistance;
+import com.Spring.City.service.CityService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class CityServiceImpl implements CityService{
+public class CityServiceImpl implements CityService {
     private CityDao cityDao;
 
     public CityDao getCityDao() {
